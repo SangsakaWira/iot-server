@@ -15,6 +15,13 @@ let data = {
     humidity:"0"
 }
 
+app.get('/', function (req, res) {
+    res.send({
+        getData:"/get-data"
+    })
+  })
+  
+
 app.get('/get-data', function (req, res) {
   res.send(data)
 })
