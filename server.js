@@ -3,6 +3,10 @@
 
 const express = require('express')
 const app = express()
+const cors = require('cors')
+
+app.use(cors())
+
 let port = process.env.PORT || 8080
 
 let data = {
