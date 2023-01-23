@@ -1,53 +1,38 @@
-// 1. buat folder project
-// 2. ketik "npm init" dienter sampai keluar package.json
-
 const express = require('express')
 const app = express()
-const cors = require('cors')
+const port = 3000
 
-app.use(cors())
+let products = ["Baju","Celana","Kacamata", "Ikat Pinggang"]
 
-let port = process.env.PORT || 8080
-
-let data = {
-    temperature:"0",
-    pressure:"0",
-    humidity:"0"
-}
-
-app.get('/', function (req, res) {
-    res.send({
-        getData:"/get-data"
-    })
-  })
-  
-
-app.get('/get-data', function (req, res) {
-  res.send(data)
+// CREATE
+app.get('/create-products/:produk', (req, res) => {
+    // console.log(req.params.produk)
+    products.push(req.params.produk)
+    res.send(req.params.produk +" berhasil ditambahkan")
+})
+// READ
+app.get('/products', (req, res) => {
+    res.send(products)
+})
+app.get('/', (req, res) => {
+    res.send('Home')
+})
+app.get('/products/:id', (req, res) => {
+    res.send(products[req.params.id])
 })
 
-app.get('/set-temperature/:temperature', function (req, res) {
-    data = {
-        ...data,
-        temperature:req.params.temperature
-      }
-    res.send(data)
-  })
+// UPDATE
+app.get('/update-products/:product_id/:new_product', (req, res) => {
+    products[req.params.product_id] = req.params.new_product
+    res.send("Data berhasil diupdate")
+})
 
-  app.get('/set-pressure/:pressure', function (req, res) {
-    data = {
-        ...data,
-        pressure:req.params.pressure
-      }
-    res.send(data)
-  })
+// DELETE
+app.get('/delete-products/:index', (req, res) => {
+    products.splice(req.params.index, 1);
+    res.send("Data berhasil dihapus")
+})
 
-  app.get('/set-humidity/:humidity', function (req, res) {
-    data = {
-        ...data,
-        humidity:req.params.humidity
-      }
-    res.send(data)
+app.listen(port, () => {
+    console.log(`E-commerce listening on port ${port}`)
   })
-
-app.listen(port)
